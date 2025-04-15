@@ -1,0 +1,109 @@
+<div class="form-wrapper">
+  <form [formGroup]="form" (ngSubmit)="next()">
+    <div class="d-flex">
+      <mat-card>
+        <h2>Home Loan Details</h2>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Loan Amount (₹)</mat-label>
+          <input matInput type="number" min="0"
+          (keydown)="taxUtils.blockInvalid($event)" formControlName="loanAmount" />
+          <mat-error *ngIf="form.get('loanAmount')?.hasError('required')"
+            >Loan amount is required</mat-error
+          >
+          <mat-error *ngIf="form.get('loanAmount')?.hasError('min')"
+            >Must be greater than 0</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Interest Rate (%)</mat-label>
+          <input matInput type="number" min="0"
+          (keydown)="taxUtils.blockInvalid($event)" formControlName="interestRate" />
+          <mat-error *ngIf="form.get('interestRate')?.hasError('required')"
+            >Interest rate is required</mat-error
+          >
+          <mat-error
+            *ngIf="
+              form.get('interestRate')?.hasError('min') ||
+              form.get('interestRate')?.hasError('max')
+            "
+          >
+            Must be between 1% and 20%
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Loan Start Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="startDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.get('startDate')?.hasError('required')"
+            >Start date is required</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>House Type</mat-label>
+          <mat-select formControlName="houseType">
+            <mat-option value="self">Self-Occupied</mat-option>
+            <mat-option value="letout">Let-out</mat-option>
+            <mat-option value="vacant">Vacant</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!--SPOUSE-->
+        <mat-checkbox formControlName="spouseSupport">
+          Want to include spouse income / joint property?
+        </mat-checkbox>
+
+        <div *ngIf="form.get('spouseSupport')?.value">
+          <mat-form-field appearance="outline">
+            <mat-label>Spouse Income (₹)</mat-label>
+            <input matInput type="number" formControlName="spouseIncome" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Joint Home Loan Interest Claimed (₹)</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="jointHomeLoanInterest"
+            />
+          </mat-form-field>
+
+          <!-- ✅ Stacked Progress Bar -->
+          <mat-progress-bar
+            mode="determinate"
+            [value]="combinedHomeLoanUtil"
+            color="primary"
+          ></mat-progress-bar>
+          <p><strong>Used:</strong> ₹{{ totalClaimed | number }} / ₹200000</p>
+          <p class="smaller-text">
+            You: ₹{{ yourInterest | number }} | Spouse: ₹{{
+              spouseInterest | number
+            }}
+          </p>
+        </div>
+
+        <div class="btn-row">
+          <button mat-stroked-button type="button" (click)="back()">
+            Back
+          </button>
+          <button mat-raised-button color="primary" type="submit">Next</button>
+        </div>
+      </mat-card>
+      <div class="d-col">
+        <app-investment-advice></app-investment-advice>
+        <app-tax-preview-widget [data]="form.value"></app-tax-preview-widget>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,29 @@
+<mat-card class="suggestion-footer" *ngIf="data">
+  <h3>💡 Smart Suggestions</h3>
+  <ul>
+    <li *ngIf="deductions.remaining80C > 0">
+      Top-up 80C by ₹{{ deductions.remaining80C }} (ELSS/PPF) to maximize
+      savings.
+    </li>
+    <li *ngIf="deductions.remaining80D > 0">
+      Increase health insurance to claim ₹{{ deductions.remaining80D }} under
+      80D.
+    </li>
+    <li *ngIf="taxableFoodCard > 0">
+      🍱 ₹{{ taxableFoodCard }} of food card is taxable. Consider non-taxable
+      options.
+    </li>
+    <li
+      *ngIf="
+        data.medicalAllowance && data.medicalClaimed < data.medicalAllowance
+      "
+    >
+      🏥 Unclaimed medical allowance: ₹{{
+        data.medicalAllowance - data.medicalClaimed
+      }}
+    </li>
+    <li *ngIf="newTax < oldTax">
+      ✅ New regime might save you more this year.
+    </li>
+  </ul>
+</mat-card>

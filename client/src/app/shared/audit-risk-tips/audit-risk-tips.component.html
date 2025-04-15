@@ -1,0 +1,8 @@
+<mat-card *ngIf="tips.length > 0" class="audit-tips">
+  <h3>🚨 Audit Risk Tips</h3>
+  <ul>
+    <li *ngFor="let tip of tips">
+      <span [ngClass]="tip.level">{{ tip.message }}</span>
+    </li>
+  </ul>
+</mat-card>

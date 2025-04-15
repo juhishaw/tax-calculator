@@ -1,0 +1,249 @@
+<div class="form-wrapper salary">
+  <div class="d-col">
+    <div class="upload-payslip-info">
+      <div class="uplaoded-file">
+        <div class="upload-section">
+          <div class="upload-file-wrapper">
+            <label class="label" for="payslipUpload"
+              ><strong>Upload Payslip:</strong></label
+            >
+            <input
+              id="payslipUpload"
+              type="file"
+              (change)="onFileSelected($event)"
+              accept=".pdf, .png, .jpg"
+            />
+          </div>
+        </div>
+        <div *ngIf="filePreviewUrl" class="file-preview-block">
+          <button mat-stroked-button color="accent" (click)="openPreviewModal()">
+            👀 Open Payslip Preview
+          </button>
+        </div>
+      </div>
+      <div *ngIf="payslipMeta" class="payslip-meta">
+        <p>
+          <strong>PAN:</strong> {{ payslipMeta.pan || "N/A" }}&nbsp; | &nbsp;
+        </p>
+        <p><strong>UAN:</strong> {{ payslipMeta.uan || "N/A" }}</p>
+      </div>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="next()">
+      <div class="d-flex custom">
+        <div class="d-col">
+          <mat-accordion multi="true" class="full-width">
+            <!-- 💼 CTC Breakdown -->
+            <mat-expansion-panel expanded>
+              <mat-expansion-panel-header>
+                <mat-panel-title>💼 CTC Breakdown</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Total CTC (₹/year)</mat-label>
+                <input matInput type="number" formControlName="totalCTC" />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  matTooltip="Total Cost To Company including bonuses, variable, etc."
+                >
+                  <mat-icon>info</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Basic CTC (₹/year)</mat-label>
+                <input matInput type="number" formControlName="basicCTC" />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  matTooltip="Fixed monthly basic salary part of your CTC"
+                >
+                  <mat-icon>info</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <p class="info-text">
+                🔢 <strong>&nbsp;Calculated Basic %:&nbsp;</strong>
+                {{ calculatedBasicPercentage }}
+                <mat-icon
+                  matTooltip="Used to compute HRA exemption — calculated as (Basic CTC / Total CTC) × 100"
+                  >info</mat-icon
+                >
+              </p>
+
+              <mat-form-field appearance="outline">
+                <mat-label>PF Contribution (₹/year)</mat-label>
+                <input matInput type="number" formControlName="pf" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Transport Allowance (₹/year)</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="transportAllowance"
+                />
+              </mat-form-field>
+            </mat-expansion-panel>
+
+            <!-- 🧮 Salary Inference -->
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>🧮 Salary Inference</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <div class="d-flex">
+                <mat-slide-toggle formControlName="useMonthly">
+                  Monthly / Annual
+                </mat-slide-toggle>
+
+                <ng-container
+                  *ngIf="form.get('useMonthly')?.value; else annualBlock"
+                >
+                  <mat-form-field appearance="outline">
+                    <mat-label>Monthly Gross Salary (₹/month)</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      min="0"
+                      (keydown)="taxUtils.blockInvalid($event)"
+                      formControlName="monthlyGross"
+                    />
+                    <button
+                      mat-icon-button
+                      matSuffix
+                      matTooltip="Monthly in-hand gross salary"
+                    >
+                      <mat-icon>info</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </ng-container>
+
+                <ng-template #annualBlock>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Annual Salary Earnings (₹/year)</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      min="0"
+                      (keydown)="taxUtils.blockInvalid($event)"
+                      formControlName="annualSalary"
+                    />
+                    <button
+                      mat-icon-button
+                      matSuffix
+                      matTooltip="Total gross salary earned this year"
+                    >
+                      <mat-icon>info</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </ng-template>
+              </div>
+            </mat-expansion-panel>
+
+            <!-- 🏠 Rent & HRA -->
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>🏠 Rent & HRA</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <mat-form-field appearance="outline">
+                <mat-label>HRA Received (₹/year)</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="hra"
+                  min="0"
+                  (keydown)="taxUtils.blockInvalid($event)"
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  matTooltip="House Rent Allowance received as part of salary"
+                >
+                  <mat-icon>info</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Rent Paid (₹/year)</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="0"
+                  (keydown)="taxUtils.blockInvalid($event)"
+                  formControlName="rentPaid"
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  matTooltip="Annual rent paid by you"
+                >
+                  <mat-icon>info</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-checkbox formControlName="isMetro">
+                Is the city a metro?
+              </mat-checkbox>
+            </mat-expansion-panel>
+
+            <!-- 🧾 Reimbursements & Benefits -->
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>🧾 Reimbursements & Benefits</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Medical Allowance Entitled (₹/year)</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="0"
+                  (keydown)="taxUtils.blockInvalid($event)"
+                  formControlName="medicalAllowance"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Medical Claimed this FY (₹/year)</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="0"
+                  (keydown)="taxUtils.blockInvalid($event)"
+                  formControlName="medicalClaimed"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Food Card (Sodexo/Zeta) (₹/year)</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="0"
+                  (keydown)="taxUtils.blockInvalid($event)"
+                  formControlName="foodCard"
+                />
+              </mat-form-field>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <div class="btn-row">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="form.invalid"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+        <div class="d-col">
+          <app-tax-policy-table></app-tax-policy-table>
+          <app-tax-preview-widget [data]="form.value"></app-tax-preview-widget>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

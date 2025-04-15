@@ -1,0 +1,54 @@
+<div class="form-wrapper">
+  <div class="d-flex">
+    <mat-card class="no-form">
+      <h2>Tax Regime Comparison</h2>
+
+      <table
+        mat-table
+        [dataSource]="[
+          { regime: 'Old Tax Regime', tax: oldTax },
+          { regime: 'New Tax Regime', tax: newTax }
+        ]"
+        class="mat-elevation-z2"
+      >
+        <!-- Regime Column -->
+        <ng-container matColumnDef="regime">
+          <th mat-header-cell *matHeaderCellDef>Regime</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.regime }}
+          </td>
+        </ng-container>
+
+        <!-- Tax Column -->
+        <ng-container matColumnDef="tax">
+          <th mat-header-cell *matHeaderCellDef>Tax (incl. Cess)</th>
+          <td mat-cell *matCellDef="let element">
+            ₹{{ element.tax | number }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['regime', 'tax']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['regime', 'tax']"></tr>
+      </table>
+
+      <mat-divider class="my-4"></mat-divider>
+
+      <h3 class="highlight">
+        💡 Recommended Regime:
+        <span>
+          {{
+            recommended === "old"
+              ? "Go for Old – More Deduction Benefit!"
+              : "Go for New – Cleaner & Lower"
+          }}
+        </span>
+      </h3>
+
+      <div class="btn-row">
+        <button mat-stroked-button (click)="back()">Back</button>
+        <button mat-raised-button color="primary" (click)="next()">Next</button>
+      </div>
+    </mat-card>
+    <app-deduction-summary [data]="data"></app-deduction-summary>
+  </div>
+</div>

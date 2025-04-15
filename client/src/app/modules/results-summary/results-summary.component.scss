@@ -1,0 +1,37 @@
+@import "../../shared/form-layout.scss";
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+
+  td {
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    color: #333;
+  }
+
+  td:first-child {
+    font-weight: 600;
+    width: 60%;
+  }
+}
+
+.btn-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+
+.left {
+  flex: 1;
+}
+
+.right {
+  .btn-row {
+    margin-top: 0;
+  }
+}

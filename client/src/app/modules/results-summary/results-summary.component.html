@@ -1,0 +1,223 @@
+<mat-card class="no-form">
+  <div class="d-flex">
+    <div class="left">
+      <h2>🧾 Final Summary</h2>
+
+      <mat-divider />
+      <h3>📉 Deductions Summary</h3>
+      <table class="summary-table">
+        <tr>
+          <td>📦 80C (PPF + LIC + PF)</td>
+          <td>₹{{ deductions.total80C | number }}</td>
+        </tr>
+        <tr>
+          <td>🏥 80D (Health Insurance)</td>
+          <td>₹{{ deductions.total80D | number }}</td>
+        </tr>
+        <tr>
+          <td>🏦 80CCD(1B) (NPS)</td>
+          <td>₹{{ deductions.npsDeduction | number }}</td>
+        </tr>
+        <tr>
+          <td>🏡 Home Loan Interest (24b)</td>
+          <td>₹{{ deductions.housePropertySetoff | number }}</td>
+        </tr>
+        <tr>
+          <td>🎓 Education Loan (80E)</td>
+          <td>₹{{ data.educationLoanInterest | number }}</td>
+        </tr>
+        <tr>
+          <td>🙏 Donations (80G)</td>
+          <td>₹{{ data.donations80G | number }}</td>
+        </tr>
+        <tr>
+          <td>💰 Savings Interest (80TTA)</td>
+          <td>₹{{ data.savingsInterest | number }}</td>
+        </tr>
+        <tr>
+          <td>🏠 Rent (no HRA) (80GG)</td>
+          <td>₹{{ data.noHraRentPaid | number }}</td>
+        </tr>
+        <tr *ngIf="data.disabilityClaimType === 'self'">
+          <td>♿ 80U (Self Disability)</td>
+          <td>₹{{ getDisabilityDeduction() | number }}</td>
+        </tr>
+        <tr *ngIf="data.disabilityClaimType === 'dependent'">
+          <td>🧑‍🦽 80DD (Dependent Disability)</td>
+          <td>₹{{ getDisabilityDeduction() | number }}</td>
+        </tr>
+        <tr>
+          <td>🧬 Critical Illness (80DDB)</td>
+          <td>₹{{ data.section80ddb | number }}</td>
+        </tr>
+        <tr>
+          <td>🚘 EV Loan (80EEB)</td>
+          <td>₹{{ data.section80eeb | number }}</td>
+        </tr>        
+        <tr>
+          <td><strong>🧮 Total Deductible</strong></td>
+          <td>
+            <strong>₹{{ deductions.totalDeductions | number }}</strong>
+          </td>
+        </tr>
+      </table>
+
+      <mat-divider />
+      <h3>💼 Income & Rent</h3>
+      <table class="summary-table">
+        <tr>
+          <td>💵 Gross Salary</td>
+          <td>₹{{ data.salary | number }}</td>
+        </tr>
+        <tr>
+          <td>📊 Basic %</td>
+          <td>{{ data.basicPercentage }}%</td>
+        </tr>
+        <tr>
+          <td>🏠 HRA Received</td>
+          <td>₹{{ data.hra | number }}</td>
+        </tr>
+        <tr>
+          <td>🏙️ Rent Paid</td>
+          <td>
+            ₹{{ data.rentPaid | number }} ({{
+              data.isMetro ? "Metro" : "Non-Metro"
+            }})
+          </td>
+        </tr>
+      </table>
+
+      <mat-divider />
+      <h3 *ngIf="data.spouseSupport">👩‍❤️‍👨 Spouse Support</h3>
+      <table class="summary-table" *ngIf="data.spouseSupport">
+        <tr>
+          <td>Spouse Income</td>
+          <td>₹{{ data.spouseIncome | number }}</td>
+        </tr>
+        <tr>
+          <td>Joint Home Loan Interest</td>
+          <td>₹{{ data.jointHomeLoanInterest | number }}</td>
+        </tr>
+      </table>
+
+      <mat-divider />
+      <h3>💼 Investments</h3>
+      <table class="summary-table">
+        <tr>
+          <td>🏛️ PPF</td>
+          <td>₹{{ data.ppf | number }}</td>
+        </tr>
+        <tr>
+          <td>📄 LIC</td>
+          <td>₹{{ data.lic | number }}</td>
+        </tr>
+        <tr>
+          <td>🏢 PF</td>
+          <td>₹{{ data.pf | number }}</td>
+        </tr>
+        <tr>
+          <td>📈 NPS</td>
+          <td>₹{{ data.nps | number }}</td>
+        </tr>
+      </table>
+
+      <mat-divider />
+      <h3>🏥 Health Insurance</h3>
+      <table class="summary-table">
+        <tr>
+          <td>🧑 Self</td>
+          <td>₹{{ data.healthInsuranceSelf | number }}</td>
+        </tr>
+        <tr>
+          <td>👴 Parents</td>
+          <td>₹{{ data.healthInsuranceParents | number }}</td>
+        </tr>
+      </table>
+
+      <mat-divider />
+      <h3>🏡 Home Loan</h3>
+      <table class="summary-table">
+        <tr>
+          <td>📅 Interest Claimed (This FY)</td>
+          <td>₹{{ data.homeLoanInterest | number }}</td>
+        </tr>
+      </table>
+
+      <mat-divider />
+      <h3>🍱 Food Card</h3>
+      <table class="summary-table">
+        <tr>
+          <td>💳 Total Received</td>
+          <td>₹{{ data.foodCard | number }}</td>
+        </tr>
+        <tr>
+          <td>🧾 Taxable Portion</td>
+          <td>₹{{ taxableFoodCard | number }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="right">
+      <mat-divider />
+      <h3>🧠 Deduction Visualization</h3>
+      <div style="max-width: 400px; margin: auto">
+        <canvas baseChart [data]="pieChartData" [type]="pieChartType"></canvas>
+      </div>
+
+      <mat-divider />
+      <h4 class="highlight">
+        💰 Old Regime: ₹{{ oldTax | number }} | 🧾 New Regime: ₹{{
+          newTax | number
+        }}
+      </h4>
+      <h4 class="highlight" style="color: green">
+        ✅ You should choose: {{ better.toUpperCase() }} REGIME
+      </h4>
+      <div class="d-col">
+        <div class="btn-row">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="downloadPDF()"
+            matTooltip="Download PDF"
+          >
+            ⬇️
+          </button>
+          <button
+            mat-stroked-button
+            (click)="copySummaryLink()"
+            matTooltip="Share Summary"
+          >
+            🔗
+          </button>
+          <button
+            mat-stroked-button
+            (click)="exportAsXLSX()"
+            matTooltip="Export Tax Sheet"
+          >
+            📁
+          </button>
+          <button
+            mat-stroked-button
+            color="warn"
+            (click)="startOver()"
+            matTooltip="Start Over"
+          >
+            🔄
+          </button>
+        </div>
+        <app-suggestions-footer
+          [data]="data"
+          [deductions]="deductions"
+          [taxableFoodCard]="taxableFoodCard"
+          [oldTax]="oldTax"
+          [newTax]="newTax"
+        ></app-suggestions-footer>
+        <app-audit-risk-tips
+          [data]="data"
+          [deductions]="deductions"
+        ></app-audit-risk-tips>
+      </div>
+    </div>
+  </div>
+</mat-card>

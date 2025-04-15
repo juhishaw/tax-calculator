@@ -1,0 +1,21 @@
+@import "../../form-layout.scss";
+.custom {
+  padding: 10px;
+  border-collapse: separate;
+  thead {
+    tr {
+      th {
+        text-align: left;
+        &:first-child {
+          width: 10%;
+        }
+        &:nth-child(2) {
+          width: 75%;
+        }
+        &:last-child {
+          width: 15%;
+        }
+      }
+    }
+  }
+}

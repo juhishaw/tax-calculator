@@ -1,0 +1,15 @@
+@import "../../shared/form-layout.scss";
+.custom {
+    .d-col {
+        flex: 1;
+    }
+}
+
+.summary-box {
+    h3 {
+        margin: 0;
+    }
+    p {
+        margin: 0;
+    }
+}

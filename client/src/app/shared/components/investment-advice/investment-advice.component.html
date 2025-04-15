@@ -1,0 +1,29 @@
+<div *ngIf="groupedAdvice">
+  <h3>💡 Suggested Next Investments</h3>
+
+  <table class="custom mat-elevation-z1 full-width">
+    <thead>
+      <tr>
+        <th>Aspect</th>
+        <th>Advice</th>
+        <th>Remaining</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let section of adviceSections">
+        <tr *ngFor="let item of groupedAdvice[section]; let i = index">
+          <td *ngIf="i === 0" [attr.rowspan]="groupedAdvice[section].length">
+            <strong>{{ section }}</strong>
+          </td>
+          <td>{{ item.suggestion }}</td>
+          <td>₹{{ item.remaining | number }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <mat-card *ngIf="projectedTaxSaved > 0" class="my-3">
+    🧮 <strong>Estimated Tax Saved:</strong>
+    ₹{{ projectedTaxSaved | number: '1.0-0' }}
+  </mat-card>
+</div>

@@ -1,0 +1,293 @@
+<div class="form-wrapper">
+  <form [formGroup]="form" (ngSubmit)="next()">
+    <div class="d-flex custom">
+      <div class="d-col">
+        <mat-accordion multi="true">
+          <!-- 80C -->
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                📦 Section 80C – Investments (Limit ₹1,50,000)
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-form-field appearance="outline">
+              <mat-label>PPF</mat-label>
+              <input
+                matInput
+                type="number"
+                min="0"
+                formControlName="ppf"
+                (keydown)="taxUtils.blockInvalid($event)"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>LIC</mat-label>
+              <input
+                matInput
+                type="number"
+                min="0"
+                formControlName="lic"
+                (keydown)="taxUtils.blockInvalid($event)"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>PF</mat-label>
+              <input
+                matInput
+                type="number"
+                min="0"
+                formControlName="pf"
+                (keydown)="taxUtils.blockInvalid($event)"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Children’s Tuition Fees</mat-label>
+              <input matInput type="number" formControlName="tuitionFees" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>NSC</mat-label>
+              <input matInput type="number" formControlName="nsc" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>5-year FD</mat-label>
+              <input matInput type="number" formControlName="fd5yr" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>ELSS</mat-label>
+              <input matInput type="number" formControlName="elss" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>ULIP</mat-label>
+              <input matInput type="number" formControlName="ulip" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Sukanya Samriddhi</mat-label>
+              <input matInput type="number" formControlName="sukanya" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Housing Loan Principal</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="housingPrincipal"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Pension Scheme (80CCC)</mat-label>
+              <input matInput type="number" formControlName="pension80ccc" />
+            </mat-form-field>
+
+            <mat-progress-bar
+              mode="determinate"
+              [value]="util80C"
+              [color]="util80C === 100 ? 'primary' : 'warn'"
+            ></mat-progress-bar>
+            <p><strong>Used:</strong> ₹{{ used80C }} / ₹150000</p>
+          </mat-expansion-panel>
+
+          <!-- 80D -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title
+                >🏥 Section 80D – Health Insurance</mat-panel-title
+              >
+            </mat-expansion-panel-header>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Self</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="healthInsuranceSelf"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Parents</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="healthInsuranceParents"
+              />
+            </mat-form-field>
+
+            <mat-checkbox formControlName="parentsAbove60">
+              Are your parents above 60?
+            </mat-checkbox>
+
+            <mat-progress-bar
+              mode="determinate"
+              [value]="util80D"
+              [color]="util80D === 100 ? 'primary' : 'warn'"
+            ></mat-progress-bar>
+            <p><strong>Used:</strong> ₹{{ used80D }} / ₹{{ max80D }}</p>
+          </mat-expansion-panel>
+
+          <!-- NPS -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title
+                >🏦 Section 80CCD(1B) – NPS (Limit ₹50,000)</mat-panel-title
+              >
+            </mat-expansion-panel-header>
+
+            <mat-form-field appearance="outline">
+              <mat-label>NPS</mat-label>
+              <input matInput type="number" formControlName="nps" />
+            </mat-form-field>
+
+            <mat-progress-bar
+              mode="determinate"
+              [value]="utilNPS"
+              [color]="utilNPS === 100 ? 'primary' : 'warn'"
+            ></mat-progress-bar>
+            <p><strong>Used:</strong> ₹{{ usedNPS }} / ₹50000</p>
+          </mat-expansion-panel>
+
+          <!-- Other Deductions -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>📚 Other Deductions</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Education Loan (80E)</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="educationLoanInterest"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Donations (80G)</mat-label>
+              <input matInput type="number" formControlName="donations80G" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>80EEB (EV Loan Interest)</mat-label>
+              <input matInput type="number" formControlName="section80eeb" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Savings Interest (80TTA)</mat-label>
+              <input matInput type="number" formControlName="savingsInterest" />
+            </mat-form-field>
+
+            <ng-container *ngIf="hraClaimed <= 0">
+              <mat-form-field appearance="outline">
+                <mat-label>Rent Paid (No HRA) (80GG)</mat-label>
+                <input matInput type="number" formControlName="noHraRentPaid" />
+              </mat-form-field>
+            </ng-container>
+          </mat-expansion-panel>
+
+          <!-- 80U + 80DD Combined -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title
+                >♿ Section 80U + 80DD – Disability Deductions</mat-panel-title
+              >
+            </mat-expansion-panel-header>
+
+            <mat-radio-group formControlName="disabilityClaimType">
+              <mat-radio-button value="none">None</mat-radio-button>
+              <mat-radio-button value="self">Self (80U)</mat-radio-button>
+              <mat-radio-button value="dependent"
+                >Dependent (80DD)</mat-radio-button
+              >
+            </mat-radio-group>
+
+            <!-- Self Disability -->
+            <div *ngIf="form.get('disabilityClaimType')?.value === 'self'">
+              <mat-form-field appearance="outline">
+                <mat-label>Disability % (Self)</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="disabilityPercentage"
+                />
+              </mat-form-field>
+
+              <mat-radio-group formControlName="disabilitySeverity">
+                <mat-radio-button value="normal"
+                  >₹75,000 (≥40%)</mat-radio-button
+                >
+                <mat-radio-button value="severe"
+                  >₹1,25,000 (≥80%)</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
+
+            <!-- Dependent Disability -->
+            <div *ngIf="form.get('disabilityClaimType')?.value === 'dependent'">
+              <mat-form-field appearance="outline">
+                <mat-label>Disability % (Dependent)</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="dependentDisabilityPercentage"
+                />
+              </mat-form-field>
+
+              <mat-radio-group formControlName="dependentSeverity">
+                <mat-radio-button value="normal"
+                  >₹75,000 (≥40%)</mat-radio-button
+                >
+                <mat-radio-button value="severe"
+                  >₹1,25,000 (≥80%)</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
+          </mat-expansion-panel>
+
+          <!-- 80DD / DDB / EEB -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>🧑‍⚕️ Advanced Medical Claims</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-form-field appearance="outline">
+              <mat-label>80DDB (Critical Illness)</mat-label>
+              <input matInput type="number" formControlName="section80ddb" />
+            </mat-form-field>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <div class="d-flex">
+          <app-tax-preview-widget [data]="form.value"></app-tax-preview-widget>
+          <div class="btn-row">
+            <button mat-stroked-button type="button" (click)="back()">
+              Back
+            </button>
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="form.invalid"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="d-col">
+        <app-investment-advice></app-investment-advice>
+        <mat-card class="summary-box">
+          <h3>🧮 Estimated Deduction Summary</h3>
+          <p><strong>Total Entered:</strong> ₹{{ totalDeduction | number }}</p>
+        </mat-card>
+      </div>
+    </div>
+  </form>
+</div>

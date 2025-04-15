@@ -1,0 +1,10 @@
+<mat-card class="preview-widget">
+  <h3>📈 Real-Time Tax Preview</h3>
+
+  <p><strong>Old Regime:</strong> ₹{{ oldTax ?? 0 | number }}</p>
+  <p><strong>New Regime:</strong> ₹{{ newTax ?? 0 | number }}</p>
+
+  <p class="highlight">
+    ✅ Recommended: <strong>{{ better.toUpperCase() }} REGIME</strong>
+  </p>
+</mat-card>
