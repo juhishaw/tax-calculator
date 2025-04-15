@@ -8,7 +8,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:4200", // <-- your Angular dev server
-      "https://tax-optimizer-app.vercel.app/" // <-- Vercel
+      "https://tax-calculator-one-theta.vercel.app" // <-- Vercel
     ],
     credentials: true,
   })
