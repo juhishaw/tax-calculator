@@ -7,6 +7,7 @@
     <div class="upload-payslip-info">
       <div class="uplaoded-file">
         <div class="upload-section">
+          <mat-checkbox [(ngModel)]="forceOCR">Force OCR (slower)</mat-checkbox>
           <div class="upload-file-wrapper">
             <label class="label" for="payslipUpload"
               ><strong>Upload Payslip:</strong></label
@@ -19,21 +20,24 @@
             />
           </div>
         </div>
-        <div *ngIf="filePreviewUrl" class="file-preview-block">
-          <button
-            mat-stroked-button
-            color="accent"
-            (click)="openPreviewModal()"
-          >
-            👀 Open Payslip Preview
-          </button>
-        </div>
       </div>
-      <div *ngIf="payslipMeta" class="payslip-meta">
-        <p>
-          <strong>PAN:</strong> {{ payslipMeta.pan || "N/A" }}&nbsp; | &nbsp;
-        </p>
-        <p><strong>UAN:</strong> {{ payslipMeta.uan || "N/A" }}</p>
+      <div *ngIf="payslipMeta && filePreviewUrl" class="payslip-meta">
+        <div class="metadata">
+          <p>
+            <strong>PAN:</strong> {{ payslipMeta.pan || "N/A" }}&nbsp; | &nbsp;
+          </p>
+          <p><strong>UAN:</strong> {{ payslipMeta.uan || "N/A" }}</p>
+        </div>
+        <div *ngIf="filePreviewUrl" class="file-preview-block">
+          <mat-icon
+            (click)="openPreviewModal()"
+            matTooltip="Open Payslip Preview"
+            >👀</mat-icon
+          >
+          <mat-icon (click)="resetPayslip()" matTooltip="Delete Payslip"
+            >❌</mat-icon
+          >
+        </div>
       </div>
     </div>
     <form [formGroup]="form" (ngSubmit)="next()">

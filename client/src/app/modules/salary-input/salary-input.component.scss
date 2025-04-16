@@ -47,6 +47,25 @@
   display: flex;
   align-items: center;
   font-size: 12px;
+  .metadata {
+    display: flex;
+    align-items: center;
+    p {
+      margin: 0;
+    }
+    margin-right: 15px;
+  }
+  .file-preview-block {
+    display: flex;
+    align-items: center;
+    mat-icon {
+      font-size: 20px;
+      cursor: pointer;
+      &:first-child {
+        margin-right: 10px;
+      }
+    }
+  }
 }
 
 .upload-loader {
@@ -60,4 +79,13 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+.upload-section {
+  display: flex;
+  align-items: center;
+
+  mat-checkbox {
+    margin-right: 20px;
+  }
 }

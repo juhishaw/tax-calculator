@@ -5,6 +5,8 @@ export interface TaxpayerDetails {
   hra: number;
   hraIsMonthly?: any;
   basicIsMonthly?: any;
+  originalHraMonthly?: number;
+  originalBasicMonthly?: number;
   rentPaid: number;
   isMetro: boolean;
   totalCTC: number;

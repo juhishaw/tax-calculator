@@ -32,6 +32,13 @@ export class TaxPreviewService {
   }
 
   uploadPayslip(formData: FormData) {
-    return this.http.post('https://tax-optimizer.onrender.com/api/payslip-upload', formData);
+    return this.http.post(
+      "https://tax-optimizer.onrender.com/api/payslip-upload",
+      formData,
+      {
+        reportProgress: true,
+        observe: "events",
+      }
+    );
   }
 }

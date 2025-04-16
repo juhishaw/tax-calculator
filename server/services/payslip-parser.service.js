@@ -1,6 +1,21 @@
 const pdfParse = require("pdf-parse");
 const fs = require("fs");
 const Tesseract = require("tesseract.js");
+const path = require("path");
+let queue = null;
+let tesseractWarmedUp = false;
+
+// Warm Tesseract + setup queue
+(async () => {
+  const mod = await import("p-queue");
+  const PQueue = mod.default;
+  queue = new PQueue({ concurrency: 1 });
+
+  // Warmup Tesseract with a dummy call
+  await Tesseract.recognize(path.join(__dirname, "../assets/blank.png"), "eng").catch(() => {});
+  tesseractWarmedUp = true;
+  console.log("🚀 Tesseract pre-warmed (v6), OCR queue ready.");
+})();
 
 function extractAmount(text, regex) {
   const match = text.match(regex);
@@ -10,10 +25,20 @@ function extractAmount(text, regex) {
 }
 
 async function extractTextFromImage(imagePath) {
-  const result = await Tesseract.recognize(imagePath, "eng", {
-    logger: (m) => console.log(m.status, m.progress),
+  if (!tesseractWarmedUp || !queue) {
+    throw new Error("Tesseract or queue not ready yet");
+  }
+
+  return await queue.add(async () => {
+    console.log("🔠 Running OCR on:", imagePath);
+    if (!fs.existsSync(imagePath)) {
+      throw new Error("Image file does not exist: " + imagePath);
+    }
+    const result = await Tesseract.recognize(imagePath, "eng", {
+      logger: m => console.log(m.status, m.progress)
+    });
+    return result.data.text;
   });
-  return result.data.text;
 }
 
 function extractPAN(text) {
@@ -26,14 +51,23 @@ function extractUAN(text) {
   return match ? match[1] : null;
 }
 
-exports.parsePayslipText = async (filePath, mimetype) => {
+exports.parsePayslipText = async (filePath, mimetype, forceOCR = false) => {
   let rawText = "";
 
   try {
-    if (mimetype === "application/pdf") {
+    if (forceOCR) {
+      console.warn("Forced OCR mode");
+      rawText = await extractTextFromImage(filePath);
+    } else if (mimetype === "application/pdf") {
       const buffer = fs.readFileSync(filePath);
       const data = await pdfParse(buffer);
-      rawText = data.text;
+
+      if (data.text.trim().length < 50) {
+        console.warn("PDF had little to no text. Falling back to OCR.");
+        rawText = await extractTextFromImage(filePath);
+      } else {
+        rawText = data.text;
+      }
     } else if (mimetype.startsWith("image/")) {
       rawText = await extractTextFromImage(filePath);
     }
@@ -42,7 +76,6 @@ exports.parsePayslipText = async (filePath, mimetype) => {
     rawText = await extractTextFromImage(filePath);
   }
 
-  // Monthly / yearly data handling
   const pfMonthly = extractAmount(
     rawText,
     /EPF\s+Contribution\s*₹?\s*([\d,]+)/i
@@ -54,7 +87,6 @@ exports.parsePayslipText = async (filePath, mimetype) => {
   const medicalMonthly =
     extractAmount(rawText, /CTC\s+Medical\s*₹?\s*([\d,]+)/i) ||
     extractAmount(rawText, /Medical\s+Allow.*₹?\s*([\d,]+)/i);
-
   const monthlyGross = extractAmount(
     rawText,
     /Gross\s+Earnings\s*₹?\s*([\d,]+)/i
@@ -71,12 +103,12 @@ exports.parsePayslipText = async (filePath, mimetype) => {
       extractAmount(rawText, /Annual\s+Salary\s*:?₹?\s*([\d,]+)/i),
 
     basicCTC:
-      extractAmount(rawText, /Projected\s+Basic\s*:?₹?\s*([\d,]+)/i) ||
+      extractAmount(rawText, /Projected\s+Basic\s*:?₹?\s*([\d,]+)/i) || // ☑️ always first
+      extractAmount(rawText, /Basic\s*₹?\s*([\d,]+)/i) ||
       extractAmount(
         rawText,
         /(?:CTC\s+)?Basic\s+(?:Salary|Pay)?[:\s]*₹?\s*([\d,]+\.\d{2})/i
-      ) ||
-      extractAmount(rawText, /Basic\s*₹?\s*([\d,]+)/i),
+      ),
 
     hra:
       extractAmount(rawText, /HRA[:\s]*₹?\s*([\d,]+\.\d{2})/i) ||
