@@ -1,15 +1,24 @@
 @import "../../shared/form-layout.scss";
 .custom {
-    .d-col {
-        flex: 1;
-    }
+    width: 1024px;
+  .d-col {
+    flex: 1;
+    gap: 10px;
+  }
+  app-investment-advice {
+    width: 100%;
+  }
 }
 
 .summary-box {
-    h3 {
-        margin: 0;
-    }
-    p {
-        margin: 0;
-    }
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  h3 {
+    margin: 0;
+  }
+  p {
+    margin: 0;
+  }
 }

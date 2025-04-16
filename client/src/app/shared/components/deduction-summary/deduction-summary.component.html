@@ -1,7 +1,7 @@
-<mat-card>
+<mat-card class="app-deduction-summary">
   <h3>📊 Deduction Summary</h3>
 
-  <table mat-table [dataSource]="rows" class="mat-elevation-z2">
+  <table mat-table [dataSource]="rows" class="policy-table">
     <ng-container matColumnDef="section">
       <th mat-header-cell *matHeaderCellDef>Section</th>
       <td mat-cell *matCellDef="let row">{{ row.section }}</td>

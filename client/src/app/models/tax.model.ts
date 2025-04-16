@@ -3,6 +3,8 @@ export interface TaxpayerDetails {
   salary: number;
   basicPercentage: number;
   hra: number;
+  hraIsMonthly?: any;
+  basicIsMonthly?: any;
   rentPaid: number;
   isMetro: boolean;
   totalCTC: number;
@@ -68,4 +70,8 @@ export interface TaxpayerDetails {
   spouseSupport: boolean;
   spouseIncome: number;
   jointHomeLoanInterest: number;
+
+  uan?: any;
+  pan?: any;
+  payslipPreviewUrl?: string | null;
 }

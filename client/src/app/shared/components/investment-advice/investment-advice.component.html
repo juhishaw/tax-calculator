@@ -1,10 +1,10 @@
 <div *ngIf="groupedAdvice">
   <h3>💡 Suggested Next Investments</h3>
 
-  <table class="custom mat-elevation-z1 full-width">
+  <table class="custom mat-elevation-z1 full-width policy-table">
     <thead>
       <tr>
-        <th>Aspect</th>
+        <th>Section</th>
         <th>Advice</th>
         <th>Remaining</th>
       </tr>
@@ -22,7 +22,7 @@
     </tbody>
   </table>
 
-  <mat-card *ngIf="projectedTaxSaved > 0" class="my-3">
+  <mat-card *ngIf="projectedTaxSaved > 0" class="card-custom">
     🧮 <strong>Estimated Tax Saved:</strong>
     ₹{{ projectedTaxSaved | number: '1.0-0' }}
   </mat-card>

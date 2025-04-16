@@ -2,7 +2,7 @@
   <form [formGroup]="form" (ngSubmit)="next()">
     <div class="d-flex custom">
       <div class="d-col">
-        <mat-accordion multi="true">
+        <mat-accordion multi="false">
           <!-- 80C -->
           <mat-expansion-panel expanded>
             <mat-expansion-panel-header>
@@ -264,6 +264,13 @@
             </mat-form-field>
           </mat-expansion-panel>
         </mat-accordion>
+      </div>
+      <div class="d-col">
+        <app-investment-advice></app-investment-advice>
+        <mat-card class="summary-box" *ngIf="totalDeduction">
+          🧮 <strong>Estimated Deduction Summary:</strong>
+          ₹{{ totalDeduction | number: '1.0-0' }}
+        </mat-card>
         <div class="d-flex">
           <app-tax-preview-widget [data]="form.value"></app-tax-preview-widget>
           <div class="btn-row">
@@ -280,13 +287,6 @@
             </button>
           </div>
         </div>
-      </div>
-      <div class="d-col">
-        <app-investment-advice></app-investment-advice>
-        <mat-card class="summary-box">
-          <h3>🧮 Estimated Deduction Summary</h3>
-          <p><strong>Total Entered:</strong> ₹{{ totalDeduction | number }}</p>
-        </mat-card>
       </div>
     </div>
   </form>

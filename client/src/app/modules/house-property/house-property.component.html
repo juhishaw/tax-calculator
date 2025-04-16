@@ -1,4 +1,4 @@
-<div class="form-wrapper">
+<div class="form-wrapper custom">
   <form [formGroup]="form" (ngSubmit)="next()">
     <div class="d-flex">
       <mat-card>
@@ -6,8 +6,13 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Loan Amount (₹)</mat-label>
-          <input matInput type="number" min="0"
-          (keydown)="taxUtils.blockInvalid($event)" formControlName="loanAmount" />
+          <input
+            matInput
+            type="number"
+            min="0"
+            (keydown)="taxUtils.blockInvalid($event)"
+            formControlName="loanAmount"
+          />
           <mat-error *ngIf="form.get('loanAmount')?.hasError('required')"
             >Loan amount is required</mat-error
           >
@@ -18,8 +23,13 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Interest Rate (%)</mat-label>
-          <input matInput type="number" min="0"
-          (keydown)="taxUtils.blockInvalid($event)" formControlName="interestRate" />
+          <input
+            matInput
+            type="number"
+            min="0"
+            (keydown)="taxUtils.blockInvalid($event)"
+            formControlName="interestRate"
+          />
           <mat-error *ngIf="form.get('interestRate')?.hasError('required')"
             >Interest rate is required</mat-error
           >
@@ -92,17 +102,20 @@
             }}
           </p>
         </div>
-
-        <div class="btn-row">
-          <button mat-stroked-button type="button" (click)="back()">
-            Back
-          </button>
-          <button mat-raised-button color="primary" type="submit">Next</button>
-        </div>
       </mat-card>
       <div class="d-col">
         <app-investment-advice></app-investment-advice>
-        <app-tax-preview-widget [data]="form.value"></app-tax-preview-widget>
+        <div class="d-flex">
+          <app-tax-preview-widget [data]="form.value"></app-tax-preview-widget>
+          <div class="btn-row">
+            <button mat-stroked-button type="button" (click)="back()">
+              Back
+            </button>
+            <button mat-raised-button color="primary" type="submit">
+              Next
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </form>

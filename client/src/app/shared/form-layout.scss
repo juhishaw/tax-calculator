@@ -35,6 +35,14 @@ mat-form-field {
 }
 
 :host ::ng-deep {
+  .mat-mdc-radio-button .mdc-radio {
+    padding: 10px;
+  }
+  .mat-mdc-radio-touch-target {
+    width: 30px;
+    height: 30px;
+  }
+
   .mat-card,
   .mat-mdc-card {
     background-color: #ffffff !important;

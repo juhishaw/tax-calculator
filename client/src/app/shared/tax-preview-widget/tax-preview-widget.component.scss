@@ -1,10 +1,17 @@
 .preview-widget {
-  position: sticky;
-  top: 1rem;
-  padding: 1rem;
+  padding: 10px;
   border-left: 4px solid #3f51b5;
   background-color: #f9f9f9;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  h3 {
+    margin: 0;
+  }
+  p {
+    margin: 0;
+    &.custom-m {
+      margin: 10px 0;
+    }
+  }
 }
 
 .highlight {

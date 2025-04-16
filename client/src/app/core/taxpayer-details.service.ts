@@ -20,7 +20,7 @@ export class TaxpayerDetailsService {
 
   getFinal(): TaxpayerDetails {
     const d = this.data;
-  
+
     return {
       // Income
       salary: d.salary || 0,
@@ -34,12 +34,23 @@ export class TaxpayerDetailsService {
       useMonthly: d.useMonthly ?? true,
       monthlyGross: d.monthlyGross || 0,
       annualSalary: d.annualSalary || 0,
-  
+
       // Reimbursements
       medicalAllowance: d.medicalAllowance || 0,
       medicalClaimed: d.medicalClaimed || 0,
       foodCard: d.foodCard || 0,
-  
+
+      // PAN/UAN tracking
+      pan: d.pan || "",
+      uan: d.uan || "",
+
+      // Toggles for basic and hra
+      basicIsMonthly: d.basicIsMonthly ?? true,
+      hraIsMonthly: d.hraIsMonthly ?? false,
+
+      //payslip
+      payslipPreviewUrl: d.payslipPreviewUrl || "",
+
       // Section 80C
       ppf: d.ppf || 0,
       lic: d.lic || 0,
@@ -54,46 +65,45 @@ export class TaxpayerDetailsService {
       housingPrincipal: d.housingPrincipal || 0,
       pension80C: d.pension80C || 0,
       pension80ccc: d.pension80ccc || 0,
-  
+
       // Section 80D
       healthInsuranceSelf: d.healthInsuranceSelf || 0,
       healthInsuranceParents: d.healthInsuranceParents || 0,
       parentsAbove60: d.parentsAbove60 || false,
-  
+
       // NPS
       nps: d.nps || 0,
-  
+
       // Other Deductions
       educationLoanInterest: d.educationLoanInterest || 0,
       donations80G: d.donations80G || 0,
       savingsInterest: d.savingsInterest || 0,
       noHraRentPaid: d.noHraRentPaid || 0,
-  
+
       // Disability
-      disabilityClaimType: d.disabilityClaimType || 'none',
+      disabilityClaimType: d.disabilityClaimType || "none",
       disabilityPercentage: d.disabilityPercentage ?? null,
-      disabilitySeverity: d.disabilitySeverity || 'normal',
+      disabilitySeverity: d.disabilitySeverity || "normal",
       dependentDisabilityPercentage: d.dependentDisabilityPercentage ?? null,
-      dependentSeverity: d.dependentSeverity || 'normal',
-  
+      dependentSeverity: d.dependentSeverity || "normal",
+
       // Advanced Medical
       section80ddb: d.section80ddb || 0,
       section80eeb: d.section80eeb || 0,
-  
+
       // EV
       electricVehicleInterest: d.electricVehicleInterest || 0,
-  
+
       // House
       homeLoanInterest: d.homeLoanInterest || 0,
-      houseType: d.houseType || 'self',
-  
+      houseType: d.houseType || "self",
+
       // Spouse
       spouseSupport: d.spouseSupport || false,
       spouseIncome: d.spouseIncome || 0,
       jointHomeLoanInterest: d.jointHomeLoanInterest || 0,
     };
   }
-  
 
   clear() {
     this.data = {};

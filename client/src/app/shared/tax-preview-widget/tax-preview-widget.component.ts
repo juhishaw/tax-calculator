@@ -13,7 +13,8 @@ export class TaxPreviewWidgetComponent implements OnInit {
 
   oldTax = 0;
   newTax = 0;
-  better: 'old' | 'new' = 'old';
+  better: string = '';
+  hasRequiredFields!: boolean;
 
   constructor(
     private taxService: TaxService,
@@ -24,12 +25,12 @@ export class TaxPreviewWidgetComponent implements OnInit {
     this.taxPreview.preview$.subscribe((merged: any) => {
       this.data = merged;
 
-      const hasRequiredFields =
+      this.hasRequiredFields =
         merged.salary && merged.basicPercentage !== undefined;
 
-      if (!hasRequiredFields) {
+      if (!this.hasRequiredFields) {
         this.oldTax = this.newTax = 0;
-        this.better = 'old';
+        this.better = 'No Data found to recommend ';
         return;
       }
 
@@ -40,7 +41,7 @@ export class TaxPreviewWidgetComponent implements OnInit {
       } catch (err) {
         console.warn('Tax calculation failed', err);
         this.oldTax = this.newTax = 0;
-        this.better = 'old';
+        this.better = '';
       }
     });
   }

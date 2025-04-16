@@ -1,1 +1,10 @@
 @import "../../shared/form-layout.scss";
+
+.custom {
+    .d-flex {
+        mat-card {
+            flex: 1;
+            padding: 15px;
+        }
+    }
+}
