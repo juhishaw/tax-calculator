@@ -292,20 +292,24 @@
               </mat-form-field>
             </mat-expansion-panel>
           </mat-accordion>
-          <div class="btn-row">
-            <button
-              mat-raised-button
-              color="primary"
-              type="submit"
-              [disabled]="isUploading"
-            >
-              Next
-            </button>
-          </div>
         </div>
         <div class="d-col">
           <app-tax-policy-table></app-tax-policy-table>
-          <app-tax-preview-widget [data]="form.value"></app-tax-preview-widget>
+          <div class="d-flex">
+            <app-tax-preview-widget
+              [data]="form.value"
+            ></app-tax-preview-widget>
+            <div class="btn-row">
+              <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="isUploading"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </form>

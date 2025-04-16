@@ -1,0 +1,68 @@
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background-color: #f8f9fa;
+  font-size: 14px;
+  border-top: 1px solid #ddd;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+
+  .footer-left,
+  .footer-center,
+  .footer-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .footer-right a {
+    color: #0077b5; // LinkedIn blue
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .footer-center {
+    gap: 6px;
+    font-style: italic;
+    color: #555;
+  }
+}
+
+.content {
+  padding: 15px;
+  height: 85vh;
+  overflow: auto;
+  margin-bottom: 20px;
+}
+
+.info-header {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 12px 24px;
+
+  .header-text {
+    color: white;
+
+    .main-message {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 4px;
+
+      .header-icon {
+        margin-right: 8px;
+      }
+    }
+
+    .sub-note {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+  }
+}
