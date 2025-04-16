@@ -65,8 +65,6 @@ export class SalaryInputComponent implements OnInit {
         basicCTC: basicNormalized,
       });
 
-      console.log(isMonthly, this.originalHraValue)
-
       // Prevent user from typing in Total CTC directly
       this.form.get("totalCTC")?.disable();
     }
@@ -121,8 +119,6 @@ export class SalaryInputComponent implements OnInit {
         this.originalHraValue = isMonthly ? val : val / 12;
       }
     });
-
-    console.log(saved);
   }
 
   private updateTotalCTC(): void {
@@ -168,7 +164,6 @@ export class SalaryInputComponent implements OnInit {
     const raw = this.form.getRawValue();
     const salary = raw.useMonthly ? raw.monthlyGross * 12 : raw.annualSalary;
     const transformedHRA = raw.hraIsMonthly ? raw.hra * 12 : raw.hra;
-    console.log(raw);
     this.taxpayerService.setPartial({
       salary,
       basicPercentage: this.calculatedBasicPercentage,
